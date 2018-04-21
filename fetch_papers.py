@@ -45,6 +45,8 @@ def parse_arxiv_url(url):
 
 if __name__ == "__main__":
 
+  #cat : cs.CV +OR+ cat : cs.AI+OR+cat :  cs.LG +OR+cat : cs.CL +OR+cat : cs.NE +OR+cat : stat.ML
+
   # parse input arguments
   parser = argparse.ArgumentParser()
   parser.add_argument('--search-query', type=str,
