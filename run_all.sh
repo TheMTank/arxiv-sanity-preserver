@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source activate papers
 python fetch_papers.py
 python download_pdfs.py
 python parse_pdf_to_text.py
