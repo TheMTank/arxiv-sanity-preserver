@@ -2,15 +2,37 @@ import time
 import os
 import sys
 import collections
+import pickle
 
 import gensim
 from gensim.models.phrases import Phrases
 
+import stopwords
+
 data_dir = '../data/txt'
 files = os.listdir(data_dir)
-print(len(files))
+print('Num text files:', len(files))
+
+from utils import Config, safe_pickle_dump
+
+# lets load the existing database to memory
+try:
+    print(Config.db_path)
+    db = pickle.load(open('../' + Config.db_path, 'rb'))
+except Exception as e:
+    print('error loading existing database:')
+    print(e)
+    print('starting from an empty database')
+    db = {}
+
+# todo read newest papers first
+
+keys_in_1804 = [k for k in db.keys() if k[:4] == '1804']
+print(len(keys_in_1804))
+# sys.exit()
 
 def get_all_documents(n=100):
+    print('Reading ', n, ' files')
     all_documents = []
     for i in range(n):
         with open(data_dir + '/' + files[i]) as f:
@@ -28,14 +50,16 @@ def get_all_documents(n=100):
     return all_documents
 
 def calculate_counter(documents):
+    print('Beginning counter')
     flattened_list = [word for sentence in documents for word in sentence]
     # print(flattened_list[0:100])
     c = collections.Counter(flattened_list)
 
-    for w_c in c.most_common(100):
-        print(w_c)
+    for w_c in c.most_common(2000):
+        if w_c not in stopwords:
+            print(w_c)
 
-documents = get_all_documents(1000)
+documents = get_all_documents(5000)
 
 # n-grams
 start = time.time()
@@ -45,9 +69,13 @@ trigram_transformer = Phrases(bigram_docs)
 trigram_docs = trigram_transformer[bigram_docs]
 
 corpus = trigram_docs
-
-calculate_counter(corpus)
 print('Time taken to create n-grams: {}'.format(time.time() - start))
+
+start = time.time()
+calculate_counter(corpus)
+print('Time taken to run counter: {}'.format(time.time() - start))
+
+# sys.exit()
 
 # create model
 start = time.time()

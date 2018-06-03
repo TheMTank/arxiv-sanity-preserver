@@ -6,8 +6,8 @@ import collections
 import pickle
 import random
 import argparse
-import urllib.request
-import feedparser
+# import urllib.request
+# import feedparser
 
 import stopwords
 
@@ -18,6 +18,7 @@ from utils import Config, safe_pickle_dump
 
 # lets load the existing database to memory
 try:
+    print(Config.db_path)
     db = pickle.load(open(Config.db_path, 'rb'))
 except Exception as e:
     print('error loading existing database:')
@@ -93,13 +94,20 @@ for year in ['2014', '2015', '2016', '2017', '2018']:
         x_ticks.append(key[2:])
 
 # Graph it
+# plt.style.use('seaborn') # ggplot
 plt.plot(range(len(num_in_each_year_month)), num_in_each_year_month)
-plt.xticks(range(len(num_in_each_year_month)), x_ticks, rotation='vertical')
-a = [x.set_color("red") for idx, x in enumerate(plt.gca().get_xticklabels()) if (idx) % 12 == 0]
+# plt.xticks(range(len(num_in_each_year_month)), x_ticks, rotation='vertical')
+plt.xticks(range(len(num_in_each_year_month)), x_ticks)
+# a = [x.set_color("red") for idx, x in enumerate(plt.gca().get_xticklabels()) if (idx) % 12 == 0]
+a = [x.set_visible(False) for idx, x in enumerate(plt.gca().get_xticklabels()) if (idx) % 12 != 0]
+# a = [x.set_majorformatter(3) for idx, x in enumerate(plt.gca().get_xticklabels()) if (idx) % 12 != 0]
 
+plt.tick_params()
 plt.xlabel('Month')
-plt.ylabel('Num papers')
-plt.title('Num papers over time')
-plt.grid(True)
+plt.ylabel('Number of papers')
+plt.title('Num papers released on arxiv over time (cs.[CV|CL|LG|AI|NE] / stat.ML)')
+plt.grid(True, color='darkgray', alpha=0.4)
+# plt.grid(b=True, which='major', color='b', linestyle='-')
+# plt.xticks(rotation=80)
 # plt.savefig("test.png")
 plt.show()
