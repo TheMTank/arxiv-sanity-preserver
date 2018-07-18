@@ -58,6 +58,7 @@ print(len(db.keys()))
 # todo Automate everything
 # todo become knowledgeable about everything in AI and have the authority and stats to back it up because i have 40k papers sitting on my harddrive
 # todo Write about it or list it somewhere public
+# todo create loop in fetch papers `python fetch_papers.py --start_index i * 100`
 
 # Only take version 1 papers
 all_titles = [doc['title'] for k, doc in db.items() if doc['_version'] == 1]
@@ -83,30 +84,31 @@ for dt in all_dates:
 x_ticks = []
 num_in_each_year_month = []
 for year in ['2014', '2015', '2016', '2017', '2018']:
-    print('\n', year, len(dt_year[year]), '\n')
     for month in range(1, 13):
-        if year == '2018' and month == 6:
+        if year == '2018' and month == 7:
             break
         key = str(year) + '-' + str(month)
         num_in_year_month = len(dt_month_in_year[key])
-        print(key, num_in_year_month)
+        print(key + ': ' + str(num_in_year_month))
         num_in_each_year_month.append(num_in_year_month)
         x_ticks.append(key[2:])
+
+    print('\nTotal ' + year + ': ' + str(len(dt_year[year])), '\n')
 
 # Graph it
 # plt.style.use('seaborn') # ggplot
 plt.plot(range(len(num_in_each_year_month)), num_in_each_year_month)
-# plt.xticks(range(len(num_in_each_year_month)), x_ticks, rotation='vertical')
-plt.xticks(range(len(num_in_each_year_month)), x_ticks)
-# a = [x.set_color("red") for idx, x in enumerate(plt.gca().get_xticklabels()) if (idx) % 12 == 0]
-a = [x.set_visible(False) for idx, x in enumerate(plt.gca().get_xticklabels()) if (idx) % 12 != 0]
+plt.xticks(range(len(num_in_each_year_month)), x_ticks, rotation='vertical')
+# plt.xticks(range(len(num_in_each_year_month)), x_ticks)
+a = [x.set_color("red") for idx, x in enumerate(plt.gca().get_xticklabels()) if (idx) % 12 == 0]
+# a = [x.set_visible(False) for idx, x in enumerate(plt.gca().get_xticklabels()) if (idx) % 12 != 0]
 # a = [x.set_majorformatter(3) for idx, x in enumerate(plt.gca().get_xticklabels()) if (idx) % 12 != 0]
 
 plt.tick_params()
 plt.xlabel('Month')
 plt.ylabel('Number of papers')
-plt.title('Num papers released on arxiv over time (cs.[CV|CL|LG|AI|NE] / stat.ML)')
-plt.grid(True, color='darkgray', alpha=0.4)
+plt.title('Num papers released on arxiv over time up to end of June (cs.[CV|CL|LG|AI|NE] / stat.ML)')
+plt.grid(True, color='darkgray', alpha=0.6)
 # plt.grid(b=True, which='major', color='b', linestyle='-')
 # plt.xticks(rotation=80)
 # plt.savefig("test.png")
