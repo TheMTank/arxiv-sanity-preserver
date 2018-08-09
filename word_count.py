@@ -85,7 +85,7 @@ x_ticks = []
 num_in_each_year_month = []
 for year in ['2014', '2015', '2016', '2017', '2018']:
     for month in range(1, 13):
-        if year == '2018' and month == 7:
+        if year == '2018' and month == 9:
             break
         key = str(year) + '-' + str(month)
         num_in_year_month = len(dt_month_in_year[key])
