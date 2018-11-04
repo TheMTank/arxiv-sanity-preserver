@@ -58,7 +58,6 @@ print(len(db.keys()))
 # todo Automate everything
 # todo become knowledgeable about everything in AI and have the authority and stats to back it up because i have 40k papers sitting on my harddrive
 # todo Write about it or list it somewhere public
-# todo create loop in fetch papers `python fetch_papers.py --start_index i * 100`
 
 # Only take version 1 papers
 all_titles = [doc['title'] for k, doc in db.items() if doc['_version'] == 1]
@@ -112,4 +111,9 @@ plt.grid(True, color='darkgray', alpha=0.6)
 # plt.grid(b=True, which='major', color='b', linestyle='-')
 # plt.xticks(rotation=80)
 # plt.savefig("test.png")
+
+print([list(x) for x in list(zip(list(x_ticks), list(num_in_each_year_month)))])
+
 plt.show()
+print(num_in_each_year_month)
+print(list(x_ticks))
