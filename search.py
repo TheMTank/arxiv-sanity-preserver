@@ -1,5 +1,32 @@
 from elasticsearch import Elasticsearch
 
+
+
+def exists_in_elastic(elastic_id):
+    num_results=10
+    from_result=0
+    client = Elasticsearch()
+
+    response = client.search(
+        index="arxiv_papers",
+        from_=from_result,
+        size=num_results,
+        body=
+        {"size": 0,
+            "_source": ["_id"],
+             "query": {"match": {
+                 "_id": elastic_id
+             }}}
+    )
+
+    if response["hits"]["hits"] == []:
+        return False
+    else:
+        return True
+
+
+
+
 def elastic_search_papers(query, num_results=10, from_result=0):
     client = Elasticsearch()
 
