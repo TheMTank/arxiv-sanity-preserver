@@ -1,7 +1,6 @@
 import glob
 import os
 import pickle
-from search import exists_in_elastic
 from elasticsearch_dsl.connections import connections
 
 import elastic_model
