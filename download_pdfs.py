@@ -5,6 +5,7 @@ import shutil
 import random
 from  urllib.request import urlopen
 
+from search import exists_in_elastic
 from utils import Config
 
 timeout_secs = 10 # after this many seconds we give up on a paper
@@ -18,6 +19,7 @@ for pid,j in db.items():
   
   pdfs = [x['href'] for x in j['links'] if x['type'] == 'application/pdf']
   assert len(pdfs) == 1
+  import pdb;pdb.set_trace()
   pdf_url = pdfs[0] + '.pdf'
   basename = pdf_url.split('/')[-1]
   fname = os.path.join(Config.pdf_dir, basename)
@@ -25,13 +27,16 @@ for pid,j in db.items():
   # try retrieve the pdf
   numtot += 1
   try:
-    if not basename in have:
+    # todo if pdf id is not in elastic search
+
+    if not basename in have and exists_in_elastic(basename):
       print('fetching %s into %s' % (pdf_url, fname))
       req = urlopen(pdf_url, None, timeout_secs)
       with open(fname, 'wb') as fp:
           shutil.copyfileobj(req, fp)
       time.sleep(0.05 + random.uniform(0,0.1))
     else:
+      # todo how to stop downloading everything...
       print('%s exists, skipping' % (fname, ))
     numok+=1
   except Exception as e:
