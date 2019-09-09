@@ -29,16 +29,20 @@ for pid,j in db.items():
   try:
     # todo if pdf id is not in elastic search
 
-    if not basename in have and exists_in_elastic(basename):
-      print('fetching %s into %s' % (pdf_url, fname))
-      req = urlopen(pdf_url, None, timeout_secs)
-      with open(fname, 'wb') as fp:
-          shutil.copyfileobj(req, fp)
-      time.sleep(0.05 + random.uniform(0,0.1))
-    else:
-      # todo how to stop downloading everything...
-      print('%s exists, skipping' % (fname, ))
-    numok+=1
+    paper_id = pdfs[0].split('/')[-1]
+    if exists_in_elastic(paper_id):
+        numok += 1
+
+    # if not basename in have and not exists_in_elastic():
+    #   print('fetching %s into %s' % (pdf_url, fname))
+    #   req = urlopen(pdf_url, None, timeout_secs)
+    #   with open(fname, 'wb') as fp:
+    #       shutil.copyfileobj(req, fp)
+    #   time.sleep(0.05 + random.uniform(0,0.1))
+    # else:
+    #   # todo how to stop downloading everything...
+    #   print('%s exists, skipping' % (fname, ))
+    # numok+=1
   except Exception as e:
     print('error downloading: ', pdf_url)
     print(e)
