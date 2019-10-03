@@ -1,4 +1,4 @@
-from elasticsearch_dsl import Document, Date, Keyword, Text
+from elasticsearch_dsl import Document, Date, Keyword, Text, Integer
 
 class Paper(Document):
     """
@@ -8,6 +8,7 @@ class Paper(Document):
     abstract = Text(analyzer='snowball')
     full_text = Text(analyzer='snowball')
     authors = Text(analyzer='snowball')
+    twitter_popularity = Integer()
     date = Date()
 
     class Index:

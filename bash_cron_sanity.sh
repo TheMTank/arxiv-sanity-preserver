@@ -18,4 +18,6 @@ echo "thumbed" >> /root/cron.log
 python /root/arxiv-sanity-preserver/analyze.py >> /root/cron.log
 echo "analyzed" >> /root/cron.log  
 python /root/arxiv-sanity-preserver/create_elastic_db.py >> /root/cron.log
+echo "twitter_popularity" >> /root/cron.log  
+python /root/arxiv-sanity-preserver/twitter_popularity.py >> /root/cron.log
 echo "finished"   
