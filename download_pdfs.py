@@ -4,6 +4,7 @@ import pickle
 import shutil
 import random
 from  urllib.request import urlopen
+import urllib.request
 
 from search import exists_in_elastic
 from utils import Config
@@ -33,9 +34,11 @@ for pid,j in db.items():
 
     if not basename in have and not exists_in_elastic(paper_id):
       print('fetching %s into %s' % (pdf_url, fname))
-      req = urlopen(pdf_url, None, timeout_secs)
-      with open(fname, 'wb') as fp:
-          shutil.copyfileobj(req, fp)
+      # req = urlopen(pdf_url, None, timeout_secs)
+      urllib.request.urlretrieve(pdf_url, fname)
+      # break
+      # with open(fname, 'wb') as fp:
+      #     shutil.copyfileobj(req, fp)
       time.sleep(0.05 + random.uniform(0,0.1))
     else:
       print('%s exists, skipping' % (fname, ))
